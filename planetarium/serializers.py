@@ -31,6 +31,7 @@ class AstronomyShowSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "description",
+            "show_themes",
         )
 
 
@@ -115,7 +116,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
 
 class TicketListSerializer(TicketSerializer):
-    movie_session = ShowSessionListSerializer(many=False, read_only=True)
+    show_session = ShowSessionListSerializer(many=False, read_only=True)
 
 
 class TicketSeatsSerializer(TicketSerializer):
