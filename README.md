@@ -40,9 +40,20 @@ After running docker container:
 * Filtering Show sessions by astronomy show id and by date
 * Filtering Astronomy shows by title and by show themes ids
 * Pagination for Reservations list
+* Uploading images for Astronomy shows
 
 # DB Structure
 
 ![DB Structure](readme_img/db_structure.png)
 
+# Demo
 
+![Browseble API interface](readme_img/register_page.png)
+![Browseble API interface](readme_img/login_page.png)
+![Browseble API interface](readme_img/tokens.png)
+![Browseble API interface](readme_img/api_root.png)
+![Browseble API interface](readme_img/astronomy_show_list.png)
+![Browseble API interface](readme_img/astronomy_show_detail.png)
+![Browseble API interface](readme_img/show_session_list.png)
+![Browseble API interface](readme_img/show_session_detail.png)
+![Browseble API interface](readme_img/reservations_list.png)
