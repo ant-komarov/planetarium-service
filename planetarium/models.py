@@ -50,20 +50,14 @@ class PlanetariumDome(models.Model):
 
 class ShowSession(models.Model):
     show_time = models.DateTimeField()
-    astronomy_show = models.ForeignKey(
-        AstronomyShow,
-        on_delete=models.CASCADE
-    )
-    planetarium_dome = models.ForeignKey(
-        PlanetariumDome,
-        on_delete=models.CASCADE
-    )
+    astronomy_show = models.ForeignKey(AstronomyShow, on_delete=models.CASCADE)
+    planetarium_dome = models.ForeignKey(PlanetariumDome, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["-show_time"]
 
     def __str__(self):
-        return f"{self.astronomy_show.title} {self.show_time}"
+        return f"{self.astronomy_show.name} {self.show_time}"
 
 
 class Reservation(models.Model):
@@ -90,18 +84,18 @@ class Ticket(models.Model):
     )
 
     @staticmethod
-    def validate_ticket(row, seat, dome, error_to_raise):
-        for ticket_attr_value, ticket_attr_name, dome_attr_name in [
+    def validate_ticket(row, seat, planetarium_dome, error_to_raise):
+        for ticket_attr_value, ticket_attr_name, planetarium_dome_attr_name in [
             (row, "row", "rows"),
             (seat, "seat", "seats_in_row"),
         ]:
-            count_attrs = getattr(dome, dome_attr_name)
+            count_attrs = getattr(planetarium_dome, planetarium_dome_attr_name)
             if not (1 <= ticket_attr_value <= count_attrs):
                 raise error_to_raise(
                     {
                         ticket_attr_name: f"{ticket_attr_name} "
-                                          "number must be in available range: "
-                                          f"(1, {dome_attr_name}): "
+                                          f"number must be in available range: "
+                                          f"(1, {planetarium_dome_attr_name}): "
                                           f"(1, {count_attrs})"
                     }
                 )
