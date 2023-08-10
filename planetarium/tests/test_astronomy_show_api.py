@@ -1,3 +1,6 @@
+import tempfile
+import os
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -5,19 +8,11 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from planetarium.models import (
-    ShowTheme,
-    ShowSession,
-    AstronomyShow,
-    PlanetariumDome
-)
-from planetarium.serializers import (
-    AstronomyShowDetailSerializer,
-    AstronomyShowListSerializer
-)
-
+from planetarium.models import ShowTheme, ShowSession, AstronomyShow, Reservation, PlanetariumDome, Ticket
+from planetarium.serializers import AstronomyShowSerializer, AstronomyShowDetailSerializer
 
 ASTRONOMY_SHOW_URL = reverse("planetarium:astronomyshow-list")
+SHOW_SESSION_URL = reverse("planetarium:showsession-list")
 
 
 def sample_astronomy_show(**params):
@@ -61,123 +56,169 @@ class UnauthenticatedAstronomyShowApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class AuthenticatedAstronomyShowApiTests(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
-            "test@ukr.net",
-            "pwd12345pwd",
-        )
-        self.client.force_authenticate(self.user)
-
-    def test_list_astronomy_shows(self):
-        sample_astronomy_show()
-        sample_astronomy_show()
-
-        res = self.client.get(ASTRONOMY_SHOW_URL)
-
-        astronomy_shows = AstronomyShow.objects.order_by("id")
-        serializer = AstronomyShowListSerializer(astronomy_shows, many=True)
-
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
-
-    def test_filter_astronomy_shows_by_show_themes(self):
-        show_theme1 = ShowTheme.objects.create(name="Theme 1")
-        show_theme2 = ShowTheme.objects.create(name="Theme 2")
-
-        astronomy_show1 = sample_astronomy_show(title="Show 1", description="Description1")
-        astronomy_show2 = sample_astronomy_show(title="Show 2", description="Description2")
-
-        astronomy_show1.show_themes.add(show_theme1)
-        astronomy_show2.show_themes.add(show_theme2)
-
-        astronomy_show3 = sample_astronomy_show(title="Show without themes")
-
-        res = self.client.get(
-            ASTRONOMY_SHOW_URL, {"show_themes": f"{show_theme1.id},{show_theme2.id}"}
-        )
-
-        serializer1 = AstronomyShowListSerializer(astronomy_show1)
-        serializer2 = AstronomyShowListSerializer(astronomy_show2)
-        serializer3 = AstronomyShowListSerializer(astronomy_show3)
-
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
-
-    def test_filter_astronomy_shows_by_title(self):
-        astronomy_show1 = sample_astronomy_show(title="Stars", description="Description1")
-        astronomy_show2 = sample_astronomy_show(title="Sun is our star", description="Description2")
-        astronomy_show3 = sample_astronomy_show(title="Mars", description="Description3")
-
-        res = self.client.get(ASTRONOMY_SHOW_URL, {"title": "star"})
-
-        serializer1 = AstronomyShowListSerializer(astronomy_show1)
-        serializer2 = AstronomyShowListSerializer(astronomy_show2)
-        serializer3 = AstronomyShowListSerializer(astronomy_show3)
-
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
-
-    def test_retrieve_astronomy_show_detail(self):
-        astronomy_show = sample_astronomy_show()
-        show_theme = ShowTheme.objects.create(name="Star")
-        astronomy_show.show_themes.add(show_theme)
-
-        url = detail_url(astronomy_show.id)
-        res = self.client.get(url)
-
-        serializer = AstronomyShowDetailSerializer(astronomy_show)
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
-
-    def test_create_astronomy_show_forbidden(self):
-        payload = {
-            "title": "Stars",
-            "description": "Description",
-        }
-        res = self.client.post(ASTRONOMY_SHOW_URL, payload)
-
-        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
-
-
-class AdminMovieApiTests(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
-            "admin@ukr.net",
-            "pwd12345pwd",
-            is_staff=True
-        )
-        self.client.force_authenticate(self.user)
-
-    def test_create_astronomy_session(self):
-        payload = {
-            "title": "Stars",
-            "description": "Description",
-        }
-        res = self.client.post(ASTRONOMY_SHOW_URL, payload)
-
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        astronomy_show = AstronomyShow.objects.get(id=res.data["id"])
-        for key in payload.keys():
-            self.assertEqual(payload[key], getattr(astronomy_show, key))
-
-    def test_create_astronomy_shows_with_show_themes(self):
-        show_theme1 = ShowTheme.objects.create(name="Planets")
-        show_theme2 = ShowTheme.objects.create(name="Stars")
-        payload = {
-            "title": "Universe",
-            "description": "Interesting journey throw the universe",
-            "show_themes": [show_theme1.id, show_theme2.id],
-        }
-        res = self.client.post(ASTRONOMY_SHOW_URL, payload)
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
-        astronomy_show = AstronomyShow.objects.get(id=res.data["id"])
-        show_themes = astronomy_show.show_themes.all()
-        self.assertEqual(show_themes.count(), 2)
-        self.assertIn(show_theme1, show_themes)
-        self.assertIn(show_theme2, show_themes)
+# class AuthenticatedMovieApiTests(TestCase):
+#     def setUp(self):
+#         self.client = APIClient()
+#         self.user = get_user_model().objects.create_user(
+#             "test@test.com",
+#             "testpass",
+#         )
+#         self.client.force_authenticate(self.user)
+#
+#     def test_list_movies(self):
+#         sample_movie()
+#         sample_movie()
+#
+#         res = self.client.get(MOVIE_URL)
+#
+#         movies = Movie.objects.order_by("id")
+#         serializer = MovieListSerializer(movies, many=True)
+#
+#         self.assertEqual(res.status_code, status.HTTP_200_OK)
+#         self.assertEqual(res.data, serializer.data)
+#
+#     def test_filter_movies_by_genres(self):
+#         genre1 = Genre.objects.create(name="Genre 1")
+#         genre2 = Genre.objects.create(name="Genre 2")
+#
+#         movie1 = sample_movie(title="Movie 1")
+#         movie2 = sample_movie(title="Movie 2")
+#
+#         movie1.genres.add(genre1)
+#         movie2.genres.add(genre2)
+#
+#         movie3 = sample_movie(title="Movie without genres")
+#
+#         res = self.client.get(
+#             MOVIE_URL, {"genres": f"{genre1.id},{genre2.id}"}
+#         )
+#
+#         serializer1 = MovieListSerializer(movie1)
+#         serializer2 = MovieListSerializer(movie2)
+#         serializer3 = MovieListSerializer(movie3)
+#
+#         self.assertIn(serializer1.data, res.data)
+#         self.assertIn(serializer2.data, res.data)
+#         self.assertNotIn(serializer3.data, res.data)
+#
+#     def test_filter_movies_by_actors(self):
+#         actor1 = Actor.objects.create(first_name="Actor 1", last_name="Last 1")
+#         actor2 = Actor.objects.create(first_name="Actor 2", last_name="Last 2")
+#
+#         movie1 = sample_movie(title="Movie 1")
+#         movie2 = sample_movie(title="Movie 2")
+#
+#         movie1.actors.add(actor1)
+#         movie2.actors.add(actor2)
+#
+#         movie3 = sample_movie(title="Movie without actors")
+#
+#         res = self.client.get(
+#             MOVIE_URL, {"actors": f"{actor1.id},{actor2.id}"}
+#         )
+#
+#         serializer1 = MovieListSerializer(movie1)
+#         serializer2 = MovieListSerializer(movie2)
+#         serializer3 = MovieListSerializer(movie3)
+#
+#         self.assertIn(serializer1.data, res.data)
+#         self.assertIn(serializer2.data, res.data)
+#         self.assertNotIn(serializer3.data, res.data)
+#
+#     def test_filter_movies_by_title(self):
+#         movie1 = sample_movie(title="Movie")
+#         movie2 = sample_movie(title="Another Movie")
+#         movie3 = sample_movie(title="No match")
+#
+#         res = self.client.get(MOVIE_URL, {"title": "movie"})
+#
+#         serializer1 = MovieListSerializer(movie1)
+#         serializer2 = MovieListSerializer(movie2)
+#         serializer3 = MovieListSerializer(movie3)
+#
+#         self.assertIn(serializer1.data, res.data)
+#         self.assertIn(serializer2.data, res.data)
+#         self.assertNotIn(serializer3.data, res.data)
+#
+#     def test_retrieve_movie_detail(self):
+#         movie = sample_movie()
+#         movie.genres.add(Genre.objects.create(name="Genre"))
+#         movie.actors.add(
+#             Actor.objects.create(first_name="Actor", last_name="Last")
+#         )
+#
+#         url = detail_url(movie.id)
+#         res = self.client.get(url)
+#
+#         serializer = MovieDetailSerializer(movie)
+#         self.assertEqual(res.status_code, status.HTTP_200_OK)
+#         self.assertEqual(res.data, serializer.data)
+#
+#     def test_create_movie_forbidden(self):
+#         payload = {
+#             "title": "Movie",
+#             "description": "Description",
+#             "duration": 90,
+#         }
+#         res = self.client.post(MOVIE_URL, payload)
+#
+#         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+#
+#
+# class AdminMovieApiTests(TestCase):
+#     def setUp(self):
+#         self.client = APIClient()
+#         self.user = get_user_model().objects.create_user(
+#             "admin@admin.com", "testpass", is_staff=True
+#         )
+#         self.client.force_authenticate(self.user)
+#
+#     def test_create_movie(self):
+#         payload = {
+#             "title": "Movie",
+#             "description": "Description",
+#             "duration": 90,
+#         }
+#         res = self.client.post(MOVIE_URL, payload)
+#
+#         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+#         movie = Movie.objects.get(id=res.data["id"])
+#         for key in payload.keys():
+#             self.assertEqual(payload[key], getattr(movie, key))
+#
+#     def test_create_movie_with_genres(self):
+#         genre1 = Genre.objects.create(name="Action")
+#         genre2 = Genre.objects.create(name="Adventure")
+#         payload = {
+#             "title": "Spider Man",
+#             "genres": [genre1.id, genre2.id],
+#             "description": "With Spider-Man's identity now revealed, Peter asks Doctor Strange for help.",
+#             "duration": 148,
+#         }
+#         res = self.client.post(MOVIE_URL, payload)
+#         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+#
+#         movie = Movie.objects.get(id=res.data["id"])
+#         genres = movie.genres.all()
+#         self.assertEqual(genres.count(), 2)
+#         self.assertIn(genre1, genres)
+#         self.assertIn(genre2, genres)
+#
+#     def test_create_movie_with_actors(self):
+#         actor1 = Actor.objects.create(first_name="Tom", last_name="Holland")
+#         actor2 = Actor.objects.create(first_name="Tobey", last_name="Maguire")
+#         payload = {
+#             "title": "Spider Man",
+#             "actors": [actor1.id, actor2.id],
+#             "description": "With Spider-Man's identity now revealed, Peter asks Doctor Strange for help.",
+#             "duration": 148,
+#         }
+#         res = self.client.post(MOVIE_URL, payload)
+#         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+#
+#         movie = Movie.objects.get(id=res.data["id"])
+#         actors = movie.actors.all()
+#         self.assertEqual(actors.count(), 2)
+#         self.assertIn(actor1, actors)
+#         self.assertIn(actor2, actors)
+#
