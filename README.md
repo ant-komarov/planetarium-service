@@ -26,7 +26,7 @@ After running docker container:
 * Go to 127.0.0.1:8000/api/user/login/
 * Input credentials you register and receive access and refresh tokens (by default access token valid for 20 minutes, refresh token valid for 1 day)
 * Access-token can be refreshed on 127.0.0.1:8000/api/user/token/refresh/ by using refresh-token
-* Access token can be verified on 127.0.0.1:8000/api/user/token/verufy/
+* Access token can be verified on 127.0.0.1:8000/api/user/token/verify/
 
 # API documentation
 * Run in your browser: 127.0.0.1:8000/api/doc/swagger/ or 127.0.0.1:8000/api/doc/redoc/
