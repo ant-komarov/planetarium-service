@@ -39,6 +39,6 @@ After running docker container:
 * For user: listing Show themes, Astronomy shows, Planetarium domes, Show sessions, creating Reservations with tickets
 * Filtering Show sessions by astronomy show id and by date
 * Filtering Astronomy shows by title and by show themes ids
-* Pagination for reservations list
+* Pagination for Reservations list
 
 
