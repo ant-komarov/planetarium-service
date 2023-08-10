@@ -126,7 +126,6 @@ class AuthenticatedAstronomyShowApiTests(TestCase):
         show_theme = ShowTheme.objects.create(name="Star")
         astronomy_show.show_themes.add(show_theme)
 
-
         url = detail_url(astronomy_show.id)
         res = self.client.get(url)
 
