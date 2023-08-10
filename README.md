@@ -25,6 +25,8 @@ After running docker container:
 * Input email and password
 * Go to 127.0.0.1:8000/api/user/login/
 * Input credentials you register and receive access and refresh tokens (by default access token valid for 20 minutes, refresh token valid for 1 day)
+* Access-token can be refreshed on 127.0.0.1:8000/api/user/token/refresh/ by using refresh-token
+* Access token can be verified on 127.0.0.1:8000/api/user/token/verufy/
 
 # API documentation
 * Run in your browser: 127.0.0.1:8000/api/doc/swagger/ or 127.0.0.1:8000/api/doc/redoc/
@@ -32,7 +34,7 @@ After running docker container:
 
 # Features
 
-* Authentication and authorisation functionality for User, using JWT
+* Authentication and authorisation functionality for User using JWT
 * For admin: managing Show themes, Astronomy shows, Planetarium domes, Show sessions, creating Reservations with tickets
 * For user: listing Show themes, Astronomy shows, Planetarium domes, Show sessions, creating Reservations with tickets
 * Filtering Show sessions by astronomy show id and by date
