@@ -41,4 +41,8 @@ After running docker container:
 * Filtering Astronomy shows by title and by show themes ids
 * Pagination for Reservations list
 
+# DB Structure
+
+![DB Structure](readme_img/db_structure.png)
+
 
