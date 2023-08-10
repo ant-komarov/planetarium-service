@@ -1,0 +1,393 @@
+[
+  {
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$320000$ompCJKy0p2Xw0x1DAQbPVo$g4dM2C0x9RMJOOjcjiJ3BskG6rnfv01Op+t625qxEds=",
+      "last_login": null,
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-08-10T11:16:53.057Z",
+      "email": "admin@ukr.net",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "planetarium.showtheme",
+    "pk": 1,
+    "fields": {
+      "name": "Journey through the Solar System"
+    }
+  },
+  {
+    "model": "planetarium.showtheme",
+    "pk": 2,
+    "fields": {
+      "name":"The Night Sky Adventure"
+    }
+  },
+  {
+    "model": "planetarium.showtheme",
+    "pk": 3,
+    "fields": {
+      "name": "Black Holes and Beyond"
+    }
+  },
+  {
+    "model": "planetarium.showtheme",
+    "pk": 4,
+    "fields": {
+      "name": "Life Beyond Earth"
+    }
+  },
+  {
+    "model":"planetarium.showtheme",
+    "pk": 5,
+    "fields":{
+      "name": "Exploring the Milky Way"
+    }
+  },
+  {
+    "model": "planetarium.showtheme",
+    "pk": 6,
+    "fields": {
+      "name": "Cosmic Origins"
+    }
+  },
+  {
+    "model":"planetarium.showtheme",
+    "pk": 7,
+    "fields": {
+      "name": "Eclipses and Transits"
+    }
+  },
+  {
+    "model": "planetarium.showtheme",
+    "pk": 8,
+    "fields": {
+      "name": "Space Travel and Beyond"
+    }
+  },
+  {
+    "model": "planetarium.showtheme",
+    "pk": 9,
+    "fields": {
+      "name": "Ancient Astronomy and Mythology"
+    }
+  },
+  {
+    "model": "planetarium.showtheme",
+    "pk": 10,
+    "fields": {
+      "name": "The Multiverse Hypothesis"
+    }
+  },
+  {
+    "model": "planetarium.astronomyshow",
+    "pk": 1,
+    "fields": {
+      "title": "Cosmic Wonders: Journey Through the Universe",
+      "description": "Embark on an awe-inspiring journey through the vast cosmos, from our solar system to the edge of the observable universe. Explore stunning visuals of galaxies, nebulae, and cosmic phenomena while learning about the latest discoveries in astronomy.",
+      "image": "",
+      "show_themes": [6, 7]
+    }
+  },
+  {
+    "model": "planetarium.astronomyshow",
+    "pk": 2,
+    "fields": {
+      "title": "Mysteries of the Black Hole",
+      "description": "Plunge into the heart of darkness as we unravel the enigma of black holes. Witness the formation, behavior, and gravitational influence of these cosmic beasts and explore their role in shaping the universe.",
+      "image": "uploads/movies/mysteries-of-the-black-hole-b0754471-a263-439e-b9dd-b8796f670421.jpg",
+      "show_themes": [3]
+    }
+  },
+  {
+    "model": "planetarium.astronomyshow",
+    "pk": 3,
+    "fields": {
+      "title": "The Solar System Odyssey",
+      "description": "Take an immersive tour of our solar system's planets, moons, and other celestial bodies. Learn about their unique features, geological processes, and the ongoing exploration missions that reveal their secrets.", "image": "", "show_themes": [1, 8]}}, {"model": "planetarium.astronomyshow", "pk": 4, "fields": {"title": "Starry Legends: Mythology and Astronomy", "description": "Discover the fascinating connections between ancient myths and the stars above. Explore how different cultures interpreted constellations and celestial events and learn how these stories continue to shape our understanding of the night sky.", "image": "", "show_themes": [9]}}, {"model": "planetarium.astronomyshow", "pk": 5, "fields": {"title": "The Search for Alien Worlds", "description": "Venture beyond our solar system to explore exoplanets � distant worlds orbiting other stars. Witness their diverse landscapes, climates, and potential for habitability, all while pondering the question of life beyond Earth.", "image": "", "show_themes": [4]}}, {"model": "planetarium.astronomyshow", "pk": 6, "fields": {"title": "Eclipses: Celestial Ballet", "description": "Uncover the captivating dance between the Earth, the Moon, and the Sun that leads to solar and lunar eclipses. Learn about the science behind these rare events and witness their stunning beauty.", "image": "uploads/movies/eclipses-celestial-ballet-400ca7b2-e699-488e-94eb-a913aaf17bc9.jpg",
+      "show_themes": [7, 9]
+    }
+  },
+  {
+    "model": "planetarium.astronomyshow",
+    "pk": 7,
+    "fields": {
+      "title": "Galactic Symphony: Music of the Cosmos",
+      "description": "Immerse yourself in a sensory experience that combines celestial visuals with an ethereal soundtrack. Journey through the universe while enjoying a symphony composed of cosmic sounds and harmonies.", "image": "", "show_themes": [2]}}, {"model": "planetarium.astronomyshow", "pk": 8, "fields": {"title": "The Farthest Reaches: Exploring Deep Space", "description": "Dive into the depths of space to witness the furthest galaxies and objects observable from Earth. Understand the expansion of the universe, cosmic inflation, and the cutting-edge technologies used to explore the unknown.", "image": "", "show_themes": [2, 5, 6, 8]
+    }
+  },
+  {
+    "model": "planetarium.astronomyshow",
+    "pk": 9,
+    "fields": {
+      "title": "Astronaut's View: Space Travel and Beyond",
+      "description": "Embark on a virtual space mission, experiencing what astronauts see and feel during space travel. Discover life on the International Space Station, glimpse Earth from orbit, and dream about future interplanetary journeys.",
+      "image": "uploads/movies/astronauts-view-space-travel-and-beyond-eca22ec8-9dde-47d9-b172-32d255e70cb6.jpg",
+      "show_themes": [4]
+    }
+  },
+  {
+    "model": "planetarium.astronomyshow",
+    "pk": 10,
+    "fields": {
+      "title": "Starlore: Tales of the Night Sky",
+      "description": "Unveil the stories and myths behind the constellations that have inspired cultures across history. Travel through time to witness how these tales connect humanity with the cosmos.",
+      "image": "",
+      "show_themes": [2, 9]
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 1,
+    "fields": {
+      "name": "Immersive Universe Dome",
+      "rows": 15,
+      "seats_in_row": 20
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 2,
+    "fields": {
+      "name": "Solar System Exploration Dome",
+      "rows": 20,
+      "seats_in_row": 24
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 3,
+    "fields": {
+      "name": "Cosmic Odyssey Dome",
+      "rows": 20,
+      "seats_in_row": 24
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 4,
+    "fields": {
+      "name":"Historical Sky Dome",
+      "rows": 15,
+      "seats_in_row": 18
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 5,
+    "fields": {"name":"Underwater Universe Dome",
+      "rows": 10,
+      "seats_in_row": 20
+    }
+  },
+  {
+    "model":"planetarium.planetariumdome",
+    "pk": 6,
+    "fields": {
+      "name":"Exoplanet Exploration Dome",
+      "rows": 12,
+      "seats_in_row": 23
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 7,
+    "fields": {
+      "name": "Mythology and Astronomy Dome",
+      "rows": 14,
+      "seats_in_row": 25
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 8,
+    "fields": {
+      "name": "Future Space Travel Dome",
+      "rows": 16,
+      "seats_in_row": 22
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 9,
+    "fields": {
+      "name": "Multimedia Spectacle Dome",
+      "rows": 20,
+      "seats_in_row": 20
+    }
+  },
+  {
+    "model": "planetarium.planetariumdome",
+    "pk": 10,
+    "fields": {
+      "name": "Virtual Reality Dome",
+      "rows": 24,
+      "seats_in_row": 16
+    }
+  },
+  {
+    "model": "planetarium.showsession",
+    "pk": 1,
+    "fields": {
+      "show_time": "2023-08-02T12:00:00Z",
+      "astronomy_show": 9,
+      "planetarium_dome": 1
+    }
+  },
+  {
+    "model": "planetarium.showsession",
+    "pk": 2,
+    "fields": {
+      "show_time": "2023-08-07T10:40:00Z",
+      "astronomy_show": 6,
+      "planetarium_dome": 2
+    }
+  },
+  {
+    "model": "planetarium.showsession",
+    "pk": 3,
+    "fields": {
+      "show_time": "2023-08-30T11:36:00Z",
+      "astronomy_show": 4,
+      "planetarium_dome": 7
+    }
+  },
+  {
+    "model": "planetarium.showsession",
+    "pk": 4,
+    "fields": {
+      "show_time": "2023-08-20T15:15:00Z",
+      "astronomy_show": 5,
+      "planetarium_dome": 3
+    }
+  },
+  {
+    "model": "planetarium.showsession",
+    "pk": 5,
+    "fields": {
+      "show_time": "2023-08-22T15:00:00Z",
+      "astronomy_show": 2,
+      "planetarium_dome": 3
+    }
+  },
+  {
+    "model": "planetarium.showsession",
+    "pk": 6,
+    "fields": {
+      "show_time": "2023-08-22T15:00:00Z",
+      "astronomy_show": 10,
+      "planetarium_dome": 7
+    }
+  },
+  {
+    "model": "planetarium.reservation",
+    "pk": 1,
+    "fields": {
+      "created_at": "2023-08-10T11:41:48.318Z",
+      "user": 1
+    }
+  },
+  {
+    "model": "planetarium.reservation",
+    "pk": 2,
+    "fields": {
+      "created_at": "2023-08-10T11:42:25.970Z",
+      "user": 1
+    }
+  },
+  {
+    "model": "planetarium.reservation",
+    "pk": 3,
+    "fields": {
+      "created_at": "2023-08-10T11:43:31.922Z",
+      "user": 1
+    }
+  },
+  {
+    "model": "planetarium.ticket",
+    "pk": 1,
+    "fields": {
+      "row": 5,
+      "seat": 9,
+      "show_session": 1,
+      "reservation": 1
+    }
+  },
+  {
+    "model": "planetarium.ticket",
+    "pk": 2,
+    "fields": {
+      "row": 5,
+      "seat": 10,
+      "show_session": 1,
+      "reservation": 1
+    }
+  },
+  {
+    "model": "planetarium.ticket",
+    "pk": 3,
+    "fields": {
+      "row": 5,
+      "seat": 11,
+      "show_session": 1,
+      "reservation": 1
+    }
+  },
+  {
+    "model": "planetarium.ticket",
+    "pk": 4,
+    "fields": {
+      "row": 6,
+      "seat": 10,
+      "show_session": 2,
+      "reservation": 2
+    }
+  },
+  {
+    "model": "planetarium.ticket",
+    "pk": 5,
+    "fields": {
+      "row": 6,
+      "seat": 11,
+      "show_session": 2,
+      "reservation": 2
+    }
+  },
+  {
+    "model": "planetarium.ticket",
+    "pk": 6,
+    "fields": {
+      "row": 8,
+      "seat": 7,
+      "show_session": 4,
+      "reservation": 3
+    }
+  },
+  {
+    "model":"planetarium.ticket",
+    "pk": 7,
+    "fields": {
+      "row": 8,
+      "seat": 8,
+      "show_session": 4,
+      "reservation": 3
+    }
+  },
+  {
+    "model": "planetarium.ticket",
+    "pk": 8,
+    "fields": {
+      "row": 8,
+      "seat": 9,
+      "show_session": 4,
+      "reservation": 3
+    }
+  }
+]
