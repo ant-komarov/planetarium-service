@@ -190,7 +190,7 @@ class ShowSessionViewSet(viewsets.ModelViewSet):
 
 
 class ReservationPagination(PageNumberPagination):
-    page_size = 10
+    page_size = 1
     max_page_size = 100
 
 
